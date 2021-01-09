@@ -4,8 +4,8 @@ import java.io.*;
 
 
 public class EPD_evaluable_III {
-     static LinkedStack<Vertice> llamadas = new LinkedStack<>();
     static boolean acabado = false;
+    static LinkedStack<Vertice> llamadas = new LinkedStack<>();
     public static void main(String[] args) {
         int camino[] = null;
         String fichero = "C:\\Users\\sergi\\Desktop\\tsp\\data\\a280.tsp";
@@ -171,12 +171,15 @@ public class EPD_evaluable_III {
         s +=(int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-     public static void dfs(Grafo graf,Vertice inicio) {
-        Vertice fin = graf.getVertice(graf.numVerts-1);
+    public static void vueltaAtras(Vertice inicio){
+       llamadas.push(inicio);
+       dfs(grafo,inicio,llamadas);
+    }
+     public static void dfs(Grafo graf,Vertice inicio ) {
         if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
-            if (inicio.equals(fin)) {//compara el inicio vertice inicial con el fin que queremos encontrar
+            if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
                 acabado = true;// si es igual true
             }
             Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
@@ -189,6 +192,9 @@ public class EPD_evaluable_III {
                 
             }
             if (vertice ==null && acabado == false) {//si vertice es null y no se ha acabado
+                if(llamadas.size() == caminoOptimo.lenght){
+                    //comprobar caminos
+                }
                 llamadas.pop();// se saca el vertice de la pila
                 inicio.setVisitado(false);// y se pone visitado a false
             }

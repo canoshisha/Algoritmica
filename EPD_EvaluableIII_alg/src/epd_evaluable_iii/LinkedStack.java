@@ -87,5 +87,6 @@ public class LinkedStack<E> implements IStack<E> {
         }
         return s;// devuelve el string
     }
+    
 
 }
