@@ -4,7 +4,8 @@ import java.io.*;
 
 
 public class EPD_evaluable_III {
-    
+     static LinkedStack<Vertice> llamadas = new LinkedStack<>();
+    static boolean acabado = false;
     public static void main(String[] args) {
         int camino[] = null;
         String fichero = "C:\\Users\\sergi\\Desktop\\tsp\\data\\a280.tsp";
@@ -170,13 +171,9 @@ public class EPD_evaluable_III {
         s +=(int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-   
-    public int[] vueltaAtras(int inicio,int[]camino,int[] caminoOptimo){
-       
-            
-
-    
-       if (acabado == false) {//si acabado == false
+     public static void dfs(Grafo graf,Vertice inicio) {
+        Vertice fin = graf.getVertice(graf.numVerts-1);
+        if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
             if (inicio.equals(fin)) {//compara el inicio vertice inicial con el fin que queremos encontrar
@@ -195,9 +192,23 @@ public class EPD_evaluable_III {
                 llamadas.pop();// se saca el vertice de la pila
                 inicio.setVisitado(false);// y se pone visitado a false
             }
-      
-        
-        
+
+        }
+
     }
+    public static void ImprimirDfs(){
+        String s ="";// string 
+        Vertice[] camino = new Vertice[llamadas.size()];// se crea un array de vertices del tamaño de la pila
+        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
+            camino[llamadas.size()-1]=llamadas.pop();
+        }
+        s+= "Start --> ";// se pone start como el inicio del laberinto
+        for(int i =1;i<camino.length-1;i++ ){// se recorre el camino realizado
+             s +=camino[i].toString() + " --> ";
+        }
+        s += "End";// el ultimo elemento se escribe como fin
+        System.out.println(s);
+    }
+  
    
 }
