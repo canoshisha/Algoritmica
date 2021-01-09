@@ -8,8 +8,8 @@ public class EPD_evaluable_III {
     static LinkedStack<Vertice> llamadas = new LinkedStack<>();
     
     public static void main(String[] args) {
-        int camino[] = null;
-        String fichero = "C:\\Users\\matero\\Desktop\\ingeniería 1º AÑO-Teoría\\SEGUNDO AÑO\\ALGORITMICA I\\EPD EVALUABLE III\\tsp\\data\\a280.tsp";
+        
+        String fichero = "D:\\GIISI\\Segundo\\ALG\\EPD\\tsp\\tsp\\data\\a280.tsp";
         double distancias[][] = Ficheros(fichero);
         Grafo graph = new Grafo(distancias.length);
         for(int i = 0; i < graph.tablAdc.length; i++){
@@ -20,8 +20,11 @@ public class EPD_evaluable_III {
             for (int k = 0; k < graph.size(); k++) {
                 graph.nuevaArista(j, k);
             }
-        }
         
+        }
+        int caminoOptimo[] = new int[graph.numVerts];
+        vueltaAtras(graph.getVertice(4), graph, caminoOptimo, distancias);
+        System.out.println(ImprimirCamino(caminoOptimo, distancias));   
         
 //        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
 //        int realizado;
@@ -152,6 +155,7 @@ public class EPD_evaluable_III {
         }
         return distancias;
     }
+    
  
     public static boolean seleccionado(int siguiente, int[] camino, int size) {// esta funcion comprueba si el elemento seleccionado en este momento se encuentra en el camino
         boolean ocupado = false;// booleano que muestra si ya esta en el camino
@@ -184,50 +188,59 @@ public class EPD_evaluable_III {
         s +=(int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-    public static void vueltaAtras(Vertice inicio, Grafo graph){
-       llamadas.push(inicio);
-       dfs(graph,inicio,llamadas);
+    public static void vueltaAtras(Vertice inicio, Grafo graph,int[] caminoOptimo,double[][] distancia){
+       dfs(graph,inicio,llamadas,caminoOptimo, distancia);
     }
-     public static void dfs(Grafo graf,Vertice inicio, LinkedStack llamadas ) {
+     public static void dfs(Grafo graf,Vertice inicio, LinkedStack llamadas,int[]caminoOptimo,double[][] distancia) {
+         
         if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
-            if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
-                acabado = true;// si es igual true
-            }
+        }
             Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
             while (acabado == false && vertice !=null) {// mientras acabado sea false y vertice distinto de null
                 Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
                 if (AristaActual.destino.getVisitado() != true) {// si no ha sido visitado el vertice adyacente 
-//                    dfs(graf,AristaActual.destino);// recursividad con el siguiente vertice adyacente
+                    dfs(graf,AristaActual.destino,llamadas,caminoOptimo,distancia);// recursividad con el siguiente vertice adyacente
                 } 
                     vertice =  vertice.getNext();// si ha sido visitado miramos el siguiente vertice de la lista
                 
             }
             if (vertice ==null && acabado == false) {//si vertice es null y no se ha acabado
-//                if(llamadas.size() == caminoOptimo.lenght){
-                    //comprobar caminos
+                if(llamadas.size() == caminoOptimo.length){
+                   int[] camino = pasoPilaArray(llamadas);
+                   if(getDistanciaTotal(distancia, camino) < getDistanciaTotal(distancia, caminoOptimo) || getDistanciaTotal(distancia, caminoOptimo) ==0)
+                       caminoOptimo = camino;
                 }
                 llamadas.pop();// se saca el vertice de la pila
                 inicio.setVisitado(false);// y se pone visitado a false
+                if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
+                acabado = true;// si es igual true
+                
+            }
             }
 
-        }
+        
+        
 
     }
-//    public static void ImprimirDfs(){
-//        String s ="";// string 
-//        Vertice[] camino = new Vertice[llamadas.size()];// se crea un array de vertices del tamaño de la pila
-//        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
-//            camino[llamadas.size()-1]=llamadas.pop();
-//        }
-//        s+= "Start --> ";// se pone start como el inicio del laberinto
-//        for(int i =1;i<camino.length-1;i++ ){// se recorre el camino realizado
-//             s +=camino[i].toString() + " --> ";
-//        }
-//        s += "End";// el ultimo elemento se escribe como fin
-//        System.out.println(s);
-//    }
-  
+     public static int[] pasoPilaArray(LinkedStack llamadas){
+         int[] camino = new int[llamadas.size()];// se crea un array de vertices del tamaño de la pila
+        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
+            Vertice vert = (Vertice) llamadas.pop();
+            camino[llamadas.size()]=vert.getNumVertice();
+        }
+        return camino;
+     }
+      public static String imprimir(int []camino){
+          String s="";
+          for(int i=0; i<=camino.length-2;i++){
+              s+= camino[i] + "->";
+          }
+          s=camino[camino.length-1] +"";
+          return s;
+      }
+
+}
    
 
