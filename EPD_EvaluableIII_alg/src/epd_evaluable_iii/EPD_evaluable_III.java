@@ -4,7 +4,7 @@ import java.io.*;
 
 
 public class EPD_evaluable_III {
-
+    
     public static void main(String[] args) {
         int camino[] = null;
         String fichero = "C:\\Users\\sergi\\Desktop\\tsp\\data\\a280.tsp";
@@ -138,50 +138,7 @@ public class EPD_evaluable_III {
         }
         return distancias;
     }
-    public static int[] getCaminoAlgoritmoVoraz(double distancias[][], int inicio) {
-        int[] camino = new int[distancias.length + 1];// creamos un vector del tamaño de la cantidad de ciudades que hay mas una mas para volver a la posicion inicial
-        camino[0] = inicio - 1;// introducimos el valor inicial en la matriz camino, le restamos uno porque el camino va a estar basado en lalocalizacion de la ciudad seleccionada en la matriz distancia.
-        boolean caminoterminado = false;// creamos un booleano para saber cuando ya esta lleno el camino con las ciudades a las que tenemos que ir
-        int i = 1;//ponemos la i a uno ya que la posicion inicial es introducida a mano
-        while (caminoterminado == false) {// hasta que o haya acabado el camino no termina el bucle
-            int anterior = camino[i - 1];// anterior es una variable que lo que hace es marcar la anterior ciudad a la nueva seleccionada para elegir la ciudad con menor distancia entre ellas.
-            camino[i] = getSiguienteAlgoritmoVoraz(distancias, camino, anterior, i);//conseguimos la siguiente ciudad a la que ir obteniendo el mejor tiempo de ir entre la ciudad anterior y ella, sin repetir ciudad en el camino
-            i++;// sumamos uno para ir guardando el camino completo
-            if (i == distancias.length) {// cuando i llega a el fin del camino
-                camino[i] = inicio - 1;// introducimos la ciudad inicial para terminar el camino
-                caminoterminado = true;// ponemos el booleano a true para indicar que ya tenemos el camino completo
-            }
-        }
-
-        return camino;// devuelve el camino completo
-    }
-    public static int getSiguienteAlgoritmoVoraz(double distancias[][], int[] camino, int inicio, int size) {
-        int selec = 0;// ciudad ya seleccionada
-        int siguiente = 0;//ciudad dos que comparar para seleccionar la mejor ciudad que elegir para el inicio introducido
-
-        while (seleccionado(selec, camino, size)) {//si selec esta ya en camino sumo uno recorriendo por completo todas las ciudades hasta encontrar la primera no usada en el camino
-            selec++;// suma uno si selec ya esta en camino
-        }
-        siguiente = selec + 1;//ponemos siguiente en la ciudad siguiente a la selecionada
-        while (siguiente < camino.length - 1) {// mientras que siguiente no haya llegado a la ultima ciudad seguimos ejecutando el codigo
-            while (seleccionado(siguiente, camino, size)) {// igual que con selec buscamos la siguiente ciudad que no este en el camino ya
-                if (siguiente < camino.length - 1) {
-                    siguiente++;
-                }
-            }
-            if (!seleccionado(siguiente, camino, size) && siguiente < camino.length - 1) {// si no esta seleccionado  y siguiente sigue  sin superar el maximo de ciudades que comparar 
-                if (getDistancia(distancias, inicio, selec) > getDistancia(distancias, inicio, siguiente)) {// si la distancia de siguiente es mejor que la seleccionada
-                    selec = siguiente;// seleccionado pasa a ser la nueva ciudad
-                    siguiente++;// y siguiente suma uno para seguir comparando con todas las ciudades del camino
-
-                } else {
-                    siguiente++;// si siguiente no esta en el camino pero es peor que la ciudad ya seleccionada 
-                }
-            }
-
-        }
-        return selec;//decuelve selec
-    }
+ 
     public static boolean seleccionado(int siguiente, int[] camino, int size) {// esta funcion comprueba si el elemento seleccionado en este momento se encuentra en el camino
         boolean ocupado = false;// booleano que muestra si ya esta en el camino
         for (int i = 0; i < size && ocupado == false; i++) {// recorremos las ciudades en el camino para ver si la ciudad introducida este en el camino
@@ -213,65 +170,32 @@ public class EPD_evaluable_III {
         s +=(int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-    public static int[] busquedaMejorCaminoAlCon(double[][] distancia, int posicionInicial) {
-        int[] camino = null;// crea el camino nuevo
-        int contador = 0, valorMaximo = 100;// pone el contador a 0 e introducimos el valor maximo del contador
+   
+    public int[] vueltaAtras(int inicio,int[]camino,int[] caminoOptimo){
+       
+            
 
-        while (contador < valorMaximo) {// mientras no llegue al maximo el contador se sigue ejecutando
-
-            int[] caminoCandidato = getCaminoAleatorio(distancia, posicionInicial);// obtiene un nuevo camino aleatorio 
-            if (camino == null// si estamos en el primer camino
-                    || getDistanciaTotal(distancia, caminoCandidato) < getDistanciaTotal(distancia, camino)) {// o si la distancia del nuevo camino es menor que la del camino anterior
-                camino = caminoCandidato;// el caminocandidato se convierte en el nuevo camino candidato
-                contador = 0;// si el camino es mejor ponemos el contador a 0
-            }else{
-            contador++;// si el camino nuevo no es mejor sumamos uno al contador
+    
+       if (acabado == false) {//si acabado == false
+            llamadas.push(inicio);// la pila introduce el vertice inicio
+            inicio.setVisitado(true);// inicio pone el booleano visitado a false
+            if (inicio.equals(fin)) {//compara el inicio vertice inicial con el fin que queremos encontrar
+                acabado = true;// si es igual true
             }
-        }
-
-        return camino;// Una vez que el contador llegue al valor maximo, devuelve el camino obtenido
-
-    }
-    public static int[] getCaminoAleatorio(double[][] distancia, int inicio) {
-          int[] camino = new int[distancia.length + 1];// creamos un vector del tamaño de el camino a realizar
-
-        camino[0] = inicio-1;//introducimos el valor inicial en el vector camino, le restamos uno porque el camino va a estar basado en la localizacion de la ciudad seleccionada en la matriz distancia.
-        int siguienteCiudad; 
-        for (int i = 1; i < distancia.length; i++) {// 
-            siguienteCiudad = getValorAleatorioEnCamino(distancia.length,camino,i);
-            camino[i] = siguienteCiudad;
-        }
-        camino[camino.length - 1] = inicio-1;// introducimos el valor inicial del camino en la ultima posición del vector csmino para indicar la vuelta a la ciudad de inicio.
-
-        return camino;// devuelve el camino obtenido
-    }
-    public static int getValorAleatorioEnCamino(int valorMaximo, int[] camino,int size) {
-        int valorenCamino = (int) Math.floor(Math.random()*valorMaximo); // escogemos un valor aleatorio entre 0 y la última ciudad del fichero que estemos calculando el camino
-        while(seleccionado(valorenCamino,camino,size)==true) // llamamos al método "seleccionado", para comprobar si la ciudad que hemos obtenido a través del número aleatorio pertenece a nuestro camino
-            valorenCamino = (int) Math.floor(Math.random()*valorMaximo);// en el caso de pertenecer al camino, se generará otro número aleatorio y se repetirá el procedimiento anterior
-        return valorenCamino;// en el caso de no pertenecer, devolverá esa ciudad
-        
-    }
-    public static int[] busquedaMejorCaminoAlItera(double[][] distancia, int posicionInicial) {
-        int[] camino = null;
-        int iterador = 0, valorMaximo = 100;
-
-        while (iterador < valorMaximo) {// mientras que el número de iteraciones no sea el número maximo de iteraciones, buscará caminos alternativos.
-
-            int[] caminoCandidato = getCaminoAleatorio(distancia, posicionInicial);// guardamos un camino nuevo que será un candidato a mejorar el camino que tenemos actualmente.
-            if (camino == null
-                    || getDistanciaTotal(distancia, caminoCandidato) < getDistanciaTotal(distancia, camino)) {// para comprobar si un camino es mejor que el camino candidato, se comprobará si el coste de cada uno
-                camino = caminoCandidato;// si el coste del camino candidato es menor que nuestro actual camino, pondremos que nuestro actual camino será el camino candidato
-               
+            Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
+            while (acabado == false && vertice !=null) {// mientras acabado sea false y vertice distinto de null
+                Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
+                if (AristaActual.destino.getVisitado() != true) {// si no ha sido visitado el vertice adyacente 
+                    dfs(graf,AristaActual.destino);// recursividad con el siguiente vertice adyacente
+                } 
+                    vertice =  vertice.getNext();// si ha sido visitado miramos el siguiente vertice de la lista
+                
             }
-            iterador++; // en el caso de que el camino actual sea mejor, el iterador seguirá aumentando
+            if (vertice ==null && acabado == false) {//si vertice es null y no se ha acabado
+                llamadas.pop();// se saca el vertice de la pila
+                inicio.setVisitado(false);// y se pone visitado a false
             }
-        
-
-        return camino;// una vez acabado las iteraciones, se devolverá el mejor camino encontrado una vez realizadas todas las iteraciones
-
-    }
-    public static void vueltaAtras(int inicio){
+      
         
         
     }
