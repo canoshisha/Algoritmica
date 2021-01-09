@@ -6,62 +6,75 @@ import java.io.*;
 public class EPD_evaluable_III {
     static boolean acabado = false;
     static LinkedStack<Vertice> llamadas = new LinkedStack<>();
+    
     public static void main(String[] args) {
         int camino[] = null;
-        String fichero = "C:\\Users\\sergi\\Desktop\\tsp\\data\\a280.tsp";
+        String fichero = "C:\\Users\\matero\\Desktop\\ingeniería 1º AÑO-Teoría\\SEGUNDO AÑO\\ALGORITMICA I\\EPD EVALUABLE III\\tsp\\data\\a280.tsp";
         double distancias[][] = Ficheros(fichero);
-        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
-        int realizado;
-       
-       
-        camino = getCaminoAlgoritmoVoraz(distancias, 27);// calculamos el camino con el algoritmo voraz empezando por la ciudad numero 27
-        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-       
-        camino=busquedaMejorCaminoAlItera(distancias, 27);//calculamos el camino con el algoritmo aleatorio con iteraciones empezando por la ciudad numero 27
-        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-        
-       
-        camino=busquedaMejorCaminoAlCon(distancias, 27);//calculamos el camino con el algoritmo aleatorio con contador empezando por la ciudad numero 27
-        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-        
-        
-        sumatorioTiempos1=0;
-        sumatorioTiempos2=0;
-        sumatorioTiempos3=0;
-        realizado=100;
-        
-        for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-        inicio = System.nanoTime();
-        camino = getCaminoAlgoritmoVoraz(distancias, 27);
-         fin = System.nanoTime();
-        sumatorioTiempos1+= fin-inicio;// calcula la media de los tiempos, del algoritmoVoraz 1.
+        Grafo graph = new Grafo(distancias.length);
+        for(int i = 0; i < graph.tablAdc.length; i++){
+            graph.nuevoVertice(i);
         }
         
-         for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-        inicio = System.nanoTime();
-        camino = busquedaMejorCaminoAlItera(distancias, 27);
-         fin = System.nanoTime();
-        sumatorioTiempos2+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero de iteraciones .
-        }
-        
-          for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-        inicio = System.nanoTime();
-        camino=busquedaMejorCaminoAlCon(distancias, 27);
-        fin = System.nanoTime();  //captura el tiempo final del test
-        sumatorioTiempos3+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero con contador.
+        for (int j = 0; j < graph.size(); j++) {
+            for (int k = 0; k < graph.size(); k++) {
+                graph.nuevaArista(j, k);
+            }
         }
         
         
-        System.out.println("\n\n");
-        System.out.println(String.format("Tiempo transcurrido en el algoritmo voraz= %d",sumatorioTiempos1/realizado));// muestra el tiempo transcurrido  en el algoritmoVoraz 1
-        System.out.println(String.format("Tiempo transcurrido en el primeroaleatorio= %d",sumatorioTiempos2/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero de iteraciones
-        System.out.println(String.format("Tiempo transcurrido en el segundoaleatorio= %d",sumatorioTiempos3/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero con contador
-        
-        
-        System.out.println("\n\n");
-        System.out.println("Fin problema\n");
-        
-        
+//        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
+//        int realizado;
+       
+//       
+//        camino = getCaminoAlgoritmoVoraz(distancias, 27);// calculamos el camino con el algoritmo voraz empezando por la ciudad numero 27
+//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
+//       
+//        camino=busquedaMejorCaminoAlItera(distancias, 27);//calculamos el camino con el algoritmo aleatorio con iteraciones empezando por la ciudad numero 27
+//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
+//        
+//       
+//        camino=busquedaMejorCaminoAlCon(distancias, 27);//calculamos el camino con el algoritmo aleatorio con contador empezando por la ciudad numero 27
+//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
+//        
+//        
+//        sumatorioTiempos1=0;
+//        sumatorioTiempos2=0;
+//        sumatorioTiempos3=0;
+//        realizado=100;
+//        
+//        for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
+//        inicio = System.nanoTime();
+//        camino = getCaminoAlgoritmoVoraz(distancias, 27);
+//         fin = System.nanoTime();
+//        sumatorioTiempos1+= fin-inicio;// calcula la media de los tiempos, del algoritmoVoraz 1.
+//        }
+//        
+//         for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
+//        inicio = System.nanoTime();
+//        camino = busquedaMejorCaminoAlItera(distancias, 27);
+//         fin = System.nanoTime();
+//        sumatorioTiempos2+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero de iteraciones .
+//        }
+//        
+//          for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
+//        inicio = System.nanoTime();
+//        camino=busquedaMejorCaminoAlCon(distancias, 27);
+//        fin = System.nanoTime();  //captura el tiempo final del test
+//        sumatorioTiempos3+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero con contador.
+//        }
+//        
+//        
+//        System.out.println("\n\n");
+//        System.out.println(String.format("Tiempo transcurrido en el algoritmo voraz= %d",sumatorioTiempos1/realizado));// muestra el tiempo transcurrido  en el algoritmoVoraz 1
+//        System.out.println(String.format("Tiempo transcurrido en el primeroaleatorio= %d",sumatorioTiempos2/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero de iteraciones
+//        System.out.println(String.format("Tiempo transcurrido en el segundoaleatorio= %d",sumatorioTiempos3/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero con contador
+//        
+//        
+//        System.out.println("\n\n");
+//        System.out.println("Fin problema\n");
+//        
+//        
 
     }
     public static double[][] Ficheros( String Cadena) {
@@ -171,11 +184,11 @@ public class EPD_evaluable_III {
         s +=(int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-    public static void vueltaAtras(Vertice inicio){
+    public static void vueltaAtras(Vertice inicio, Grafo graph){
        llamadas.push(inicio);
-       dfs(grafo,inicio,llamadas);
+       dfs(graph,inicio,llamadas);
     }
-     public static void dfs(Grafo graf,Vertice inicio ) {
+     public static void dfs(Grafo graf,Vertice inicio, LinkedStack llamadas ) {
         if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
@@ -186,13 +199,13 @@ public class EPD_evaluable_III {
             while (acabado == false && vertice !=null) {// mientras acabado sea false y vertice distinto de null
                 Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
                 if (AristaActual.destino.getVisitado() != true) {// si no ha sido visitado el vertice adyacente 
-                    dfs(graf,AristaActual.destino);// recursividad con el siguiente vertice adyacente
+//                    dfs(graf,AristaActual.destino);// recursividad con el siguiente vertice adyacente
                 } 
                     vertice =  vertice.getNext();// si ha sido visitado miramos el siguiente vertice de la lista
                 
             }
             if (vertice ==null && acabado == false) {//si vertice es null y no se ha acabado
-                if(llamadas.size() == caminoOptimo.lenght){
+//                if(llamadas.size() == caminoOptimo.lenght){
                     //comprobar caminos
                 }
                 llamadas.pop();// se saca el vertice de la pila
@@ -202,19 +215,19 @@ public class EPD_evaluable_III {
         }
 
     }
-    public static void ImprimirDfs(){
-        String s ="";// string 
-        Vertice[] camino = new Vertice[llamadas.size()];// se crea un array de vertices del tamaño de la pila
-        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
-            camino[llamadas.size()-1]=llamadas.pop();
-        }
-        s+= "Start --> ";// se pone start como el inicio del laberinto
-        for(int i =1;i<camino.length-1;i++ ){// se recorre el camino realizado
-             s +=camino[i].toString() + " --> ";
-        }
-        s += "End";// el ultimo elemento se escribe como fin
-        System.out.println(s);
-    }
+//    public static void ImprimirDfs(){
+//        String s ="";// string 
+//        Vertice[] camino = new Vertice[llamadas.size()];// se crea un array de vertices del tamaño de la pila
+//        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
+//            camino[llamadas.size()-1]=llamadas.pop();
+//        }
+//        s+= "Start --> ";// se pone start como el inicio del laberinto
+//        for(int i =1;i<camino.length-1;i++ ){// se recorre el camino realizado
+//             s +=camino[i].toString() + " --> ";
+//        }
+//        s += "End";// el ultimo elemento se escribe como fin
+//        System.out.println(s);
+//    }
   
    
-}
+

@@ -65,7 +65,7 @@ public class Grafo implements IGrafo{
     //comprobar que dos vertices son adyacentes
     @Override
     public boolean adyacente(int a, int b) {
-        if (tablAdc[a].lad.find(getVertice(b))) {
+        if (tablAdc[a].lad.find(getVertice(b)) || a == b) {
             return true;
         } else {
             return false;
