@@ -87,6 +87,24 @@ public class LinkedStack<E> implements IStack<E> {
         }
         return s;// devuelve el string
     }
-    
+    public E topIndex(int index){
+        Node<E> nodo = new Node<E>();
+        nodo = firstNode;
+        for(int i=0;i<=index;i++){
+            if(index==i){
+                return nodo.getElement();
+            } else{
+                nodo= nodo.getNext();
+            }
+        }
+        return null;
+    }
+    public E last(){
+         if (lastNode != null) {//si hay un primer elemento lo devuelve
+            return lastNode.getElement();
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+    }
 
 }
