@@ -2,33 +2,32 @@ package epd_evaluable_iii;
 
 import java.io.*;
 
-
 public class EPD_evaluable_III {
+
     static boolean acabado = false;
     static LinkedStack<Vertice> llamadas = new LinkedStack<>();
-    
+
     public static void main(String[] args) {
-        
-        String fichero = "D:\\GIISI\\Segundo\\ALG\\EPD\\tsp\\tsp\\data\\a280.tsp";
+
+        String fichero = "C:\\Users\\matero\\Desktop\\ingeniería 1º AÑO-Teoría\\SEGUNDO AÑO\\ALGORITMICA I\\EPD EVALUABLE III\\tsp\\data\\berlin52.tsp";
         double distancias[][] = Ficheros(fichero);
         Grafo graph = new Grafo(distancias.length);
-        for(int i = 0; i < graph.tablAdc.length; i++){
+        for (int i = 0; i < graph.tablAdc.length; i++) {
             graph.nuevoVertice(i);
         }
-        
+
         for (int j = 0; j < graph.size(); j++) {
             for (int k = 0; k < graph.size(); k++) {
                 graph.nuevaArista(j, k);
             }
-        
+
         }
         int caminoOptimo[] = new int[graph.numVerts];
-        vueltaAtras(graph.getVertice(4), graph, caminoOptimo, distancias);
-        System.out.println(ImprimirCamino(caminoOptimo, distancias));   
-        
+        vueltaAtras(graph.getVertice(0), graph, caminoOptimo, distancias);
+        System.out.println(ImprimirCamino(caminoOptimo, distancias));
+
 //        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
 //        int realizado;
-       
 //       
 //        camino = getCaminoAlgoritmoVoraz(distancias, 27);// calculamos el camino con el algoritmo voraz empezando por la ciudad numero 27
 //        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
@@ -78,14 +77,13 @@ public class EPD_evaluable_III {
 //        System.out.println("Fin problema\n");
 //        
 //        
-
     }
-    public static double[][] Ficheros( String Cadena) {
+
+    public static double[][] Ficheros(String Cadena) {
         File archivo = null;
         FileReader fr = null;
         BufferedReader br = null;
         double[][] distancias = null;
-        
 
         try {
             // Apertura del fichero y creacion de BufferedReader para poder
@@ -155,8 +153,7 @@ public class EPD_evaluable_III {
         }
         return distancias;
     }
-    
- 
+
     public static boolean seleccionado(int siguiente, int[] camino, int size) {// esta funcion comprueba si el elemento seleccionado en este momento se encuentra en el camino
         boolean ocupado = false;// booleano que muestra si ya esta en el camino
         for (int i = 0; i < size && ocupado == false; i++) {// recorremos las ciudades en el camino para ver si la ciudad introducida este en el camino
@@ -166,6 +163,7 @@ public class EPD_evaluable_III {
         }
         return ocupado;//devuelve el booleano 
     }
+
     public static float getDistanciaTotal(double[][] distancia, int[] camino) {
         float distanciaTotal = 0;// inicializamos la distancia total
         for (int i = 0; i < camino.length - 1; i++) {// recorre el camino 
@@ -175,72 +173,76 @@ public class EPD_evaluable_III {
         return distanciaTotal;// devuelve la distancia total
 
     }
+
     public static double getDistancia(double[][] distancias, int inicio, int siguiente) {
         double primero = distancias[inicio][1] - distancias[siguiente][1];// obtiene el primer double de la formula
         double segundo = distancias[inicio][2] - distancias[siguiente][2];// obtiene el segundo double de la formula
         return Math.sqrt(Math.pow(primero, 2) + Math.pow(segundo, 2));// realiza la formula obteniendo la distancia entre las dos ciudad
     }
+
     public static String ImprimirCamino(int[] camino, double[][] distancias) {// imprime el camino 
         String s = "[";
         for (int i = 0; i < camino.length - 1; i++) {// recorre la matriz distancia con el camino creado imprimiendo la ciudad seleccionada en el camino de la matriz distancia
-            s += (int)distancias[camino[i]][0] + ",";// convierte en int el numero de la ciudad para que no salga como double quitando el 1.00,2.00,etx
+            s += (int) distancias[camino[i]][0] + ",";// convierte en int el numero de la ciudad para que no salga como double quitando el 1.00,2.00,etx
         }
-        s +=(int) distancias[camino[camino.length - 1]][0] + "]";
+        s += (int) distancias[camino[camino.length - 1]][0] + "]";
         return s;
     }
-    public static void vueltaAtras(Vertice inicio, Grafo graph,int[] caminoOptimo,double[][] distancia){
-       dfs(graph,inicio,llamadas,caminoOptimo, distancia);
+
+    public static void vueltaAtras(Vertice inicio, Grafo graph, int[] caminoOptimo, double[][] distancia) {
+        dfs(graph, inicio, llamadas, caminoOptimo, distancia);
     }
-     public static void dfs(Grafo graf,Vertice inicio, LinkedStack llamadas,int[]caminoOptimo,double[][] distancia) {
-         
+
+    public static void dfs(Grafo graf, Vertice inicio, LinkedStack llamadas, int[] caminoOptimo, double[][] distancia) {
+
         if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
         }
-            Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
-            while (acabado == false && vertice !=null) {// mientras acabado sea false y vertice distinto de null
-                Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
-                if (AristaActual.destino.getVisitado() != true) {// si no ha sido visitado el vertice adyacente 
-                    dfs(graf,AristaActual.destino,llamadas,caminoOptimo,distancia);// recursividad con el siguiente vertice adyacente
-                } 
-                    vertice =  vertice.getNext();// si ha sido visitado miramos el siguiente vertice de la lista
-                
+        Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
+        while (acabado == false && vertice != null) {// mientras acabado sea false y vertice distinto de null
+            Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
+            if (AristaActual.destino.getVisitado() != true) {// si no ha sido visitado el vertice adyacente 
+                dfs(graf, AristaActual.destino, llamadas, caminoOptimo, distancia);// recursividad con el siguiente vertice adyacente
             }
-            if (vertice ==null && acabado == false) {//si vertice es null y no se ha acabado
-                if(llamadas.size() == caminoOptimo.length){
-                   int[] camino = pasoPilaArray(llamadas);
-                   if(getDistanciaTotal(distancia, camino) < getDistanciaTotal(distancia, caminoOptimo) || getDistanciaTotal(distancia, caminoOptimo) ==0)
-                       caminoOptimo = camino;
-                }
-                llamadas.pop();// se saca el vertice de la pila
-                inicio.setVisitado(false);// y se pone visitado a false
-                if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
-                acabado = true;// si es igual true
-                
-            }
-            }
+            vertice = vertice.getNext();// si ha sido visitado miramos el siguiente vertice de la lista
 
-        
-        
+        }
+        if (vertice == null && acabado == false) {//si vertice es null y no se ha acabado
+            if (llamadas.size() == caminoOptimo.length) {
+                int[] camino = pasoPilaArray(llamadas);
+                if (getDistanciaTotal(distancia, camino) < getDistanciaTotal(distancia, caminoOptimo) || getDistanciaTotal(distancia, caminoOptimo) == 0) {
+                    caminoOptimo = camino;
+                }
+            }
+//            llamadas.pop();// se saca el vertice de la pila
+//            inicio.setVisitado(false);// y se pone visitado a false
+            if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
+                acabado = true;// si es igual true
+
+            }
+        }
 
     }
-     public static int[] pasoPilaArray(LinkedStack llamadas){
-         int[] camino = new int[llamadas.size()];// se crea un array de vertices del tamaño de la pila
-        while(!llamadas.isEmpty()){// se va sacando elementos de la pila e introduciendolos en el array
+
+    public static int[] pasoPilaArray(LinkedStack llamadas) {
+        int[] camino = new int[llamadas.size()];// se crea un array de vertices del tamaño de la pila
+        int i = camino.length - 1;
+        while (i >= 0) {// se va sacando elementos de la pila e introduciendolos en el array
             Vertice vert = (Vertice) llamadas.pop();
-            camino[llamadas.size()]=vert.getNumVertice();
+            camino[i] = vert.getNumVertice();
+            i--;
         }
         return camino;
-     }
-      public static String imprimir(int []camino){
-          String s="";
-          for(int i=0; i<=camino.length-2;i++){
-              s+= camino[i] + "->";
-          }
-          s=camino[camino.length-1] +"";
-          return s;
-      }
+    }
+
+    public static String imprimir(int[] camino) {
+        String s = "";
+        for (int i = 0; i <= camino.length - 2; i++) {
+            s += camino[i] + "->";
+        }
+        s = camino[camino.length - 1] + "";
+        return s;
+    }
 
 }
-   
-
