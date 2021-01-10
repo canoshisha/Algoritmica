@@ -10,7 +10,7 @@ public class EPD_evaluable_III {
 
     public static void main(String[] args) {
 
-        String fichero = "D:\\GIISI\\Segundo\\ALG\\EPD\\tsp\\tsp\\data\\prueba.tsp";
+        String fichero = "D:\\GIISI\\Segundo\\ALG\\EPD\\tsp\\tsp\\data\\kroA200-10.tsp";
         double distancias[][] = Ficheros(fichero);//Creacion de la matriz de ciudades a partir del archivo tsp.
         Grafo graph = new Grafo(distancias.length);//Creacion del Grafo.
         for (int i = 0; i < graph.tablAdc.length; i++) {//Insertamos los vertices en el Grafo.
@@ -23,65 +23,31 @@ public class EPD_evaluable_III {
             }
 
         }
-        int caminoOptimo[] = new int[graph.numVerts+1];
+        int caminoOptimo[] = new int[graph.numVerts + 1];
         System.out.println("¿En que ciudad comienza el camino?\n");
         int ciudad = (int) IO.readNumber();
-        System.out.println("Estamos trabajando en ello\n");
-        vueltaAtras(graph.getVertice(ciudad-1), graph, caminoOptimo, distancias);
+        System.out.println("Estamos trabajando en ello...\n");
+        vueltaAtras(graph.getVertice(ciudad - 1), graph, caminoOptimo, distancias);
         System.out.println("El camino es:\n");
-        System.out.println(ImprimirCamino(caminoOptimo,distancias));
+        System.out.println(ImprimirCamino(caminoOptimo, distancias));
 
-//        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
-//        int realizado;
-//       
-//        camino = getCaminoAlgoritmoVoraz(distancias, 27);// calculamos el camino con el algoritmo voraz empezando por la ciudad numero 27
-//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-//       
-//        camino=busquedaMejorCaminoAlItera(distancias, 27);//calculamos el camino con el algoritmo aleatorio con iteraciones empezando por la ciudad numero 27
-//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-//        
-//       
-//        camino=busquedaMejorCaminoAlCon(distancias, 27);//calculamos el camino con el algoritmo aleatorio con contador empezando por la ciudad numero 27
-//        System.out.println(ImprimirCamino(camino, distancias) + "\n" + "Distancia total=" + getDistanciaTotal(distancias, camino));
-//        
-//        
-//        sumatorioTiempos1=0;
-//        sumatorioTiempos2=0;
-//        sumatorioTiempos3=0;
-//        realizado=100;
-//        
-//        for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-//        inicio = System.nanoTime();
-//        camino = getCaminoAlgoritmoVoraz(distancias, 27);
-//         fin = System.nanoTime();
-//        sumatorioTiempos1+= fin-inicio;// calcula la media de los tiempos, del algoritmoVoraz 1.
-//        }
-//        
-//         for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-//        inicio = System.nanoTime();
-//        camino = busquedaMejorCaminoAlItera(distancias, 27);
-//         fin = System.nanoTime();
-//        sumatorioTiempos2+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero de iteraciones .
-//        }
-//        
-//          for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
-//        inicio = System.nanoTime();
-//        camino=busquedaMejorCaminoAlCon(distancias, 27);
-//        fin = System.nanoTime();  //captura el tiempo final del test
-//        sumatorioTiempos3+= fin-inicio;// calcula la media de los tiempos, algoritmoAleatorio numero con contador.
-//        }
-//        
-//        
-//        System.out.println("\n\n");
-//        System.out.println(String.format("Tiempo transcurrido en el algoritmo voraz= %d",sumatorioTiempos1/realizado));// muestra el tiempo transcurrido  en el algoritmoVoraz 1
-//        System.out.println(String.format("Tiempo transcurrido en el primeroaleatorio= %d",sumatorioTiempos2/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero de iteraciones
-//        System.out.println(String.format("Tiempo transcurrido en el segundoaleatorio= %d",sumatorioTiempos3/realizado));// muestra el tiempo transcurrido  en el algoritmoAleatorio numero con contador
-//        
-//        
-//        System.out.println("\n\n");
-//        System.out.println("Fin problema\n");
-//        
-//        
+        long  inicio,fin,sumatorioTiempos1;
+        int realizado;
+
+        caminoOptimo = new int[graph.numVerts + 1];
+        sumatorioTiempos1=0;
+        realizado=100;
+        
+        for(int i = 0; i<realizado;i++){// repite el numero de veces que se realiza la accion 100 veces 
+        inicio = System.nanoTime();
+        vueltaAtras(graph.getVertice(ciudad - 1), graph, caminoOptimo, distancias);
+         fin = System.nanoTime();
+        sumatorioTiempos1+= fin-inicio;// calcula la media de los tiempos, del algoritmoVoraz 1.
+        }
+
+        System.out.println("\n");
+        System.out.println(String.format("Tiempo transcurrido en el vuelta atras= %d \n",sumatorioTiempos1/realizado));// muestra el tiempo transcurrido  en el algoritmo
+        System.out.println("Fin problema\n");
     }
 
     public static double[][] Ficheros(String Cadena) {
@@ -194,16 +160,28 @@ public class EPD_evaluable_III {
         return s;
     }
 
-    public static void vueltaAtras(Vertice inicio, Grafo graph, int[] caminoOptimo, double[][] distancia) {
+    public static int[] vueltaAtras(Vertice inicio, Grafo graph, int[] caminoOptimo, double[][] distancia) {
         dfs(graph, inicio, llamadas, caminoOptimo, distancia);
+        return caminoOptimo;
     }
 
-    public static void dfs(Grafo graf, Vertice inicio, LinkedStack llamadas, int[] caminoOptimo, double[][] distancia) {
+    public static void dfs(Grafo graf, Vertice inicio, LinkedStack llamadas, int[] caminoOptimo, double[][] distancia) {//vuelta atras, recorre todos los caminos
         
+
         if (acabado == false) {//si acabado == false
             llamadas.push(inicio);// la pila introduce el vertice inicio
             inicio.setVisitado(true);// inicio pone el booleano visitado a false
         }
+        int[] camino = pasoPilaArray(llamadas);//Obtenemos un camino candidato a ser el camino óptimo a partir de la pila.
+        Vertice vert = (Vertice) llamadas.last();//Guardamos la ciudad inicial la cual empezamos el camino en una variable tipo vertice.
+        camino[0] = vert.getNumVertice();//Guardamos la ciudad inicial en la ultima posicion del camino, indicando la vuelta a la ciudad inicial. 
+        double dcamino = getDistanciaTotal(distancia, camino);//Obtenemos la distancia de el camino candidato.
+        double dcaAc = getDistanciaTotal(distancia, caminoOptimo);//Obtenemos la distancia de el camino óptimo.
+        if (dcamino>dcaAc && dcaAc!=0) {//comprobamos si nos sirve el elemento que acabamos de introducir
+            llamadas.pop();// se saca el vertice de la pila
+            inicio.setVisitado(false);// y se pone visitado a false
+            inicio=(Vertice)llamadas.top();
+        }else{
         Node vertice = inicio.lad.getFirstNode();//se captura el primera arista de la lista 
         while (acabado == false && vertice != null) {// mientras acabado sea false y vertice distinto de null
             Arista AristaActual = (Arista) vertice.getElement();// cogemos la arista de la lista
@@ -214,42 +192,39 @@ public class EPD_evaluable_III {
 
         }
         if (vertice == null && acabado == false) {//si vertice es null y no se ha acabado
-            if (llamadas.size()+1 == caminoOptimo.length) {//Si el tamaño de la pila es igual al tamaño del camino óptimo.
-                int[] camino = pasoPilaArray(llamadas);//Obtenemos un camino candidato a ser el camino óptimo a partir de la pila.
-                Vertice vert =(Vertice) llamadas.last();//Guardamos la ciudad inicial la cual empezamos el camino en una variable tipo vertice.
+            if (llamadas.size() + 1 == caminoOptimo.length) {//Si el tamaño de la pila es igual al tamaño del camino óptimo.
+                camino = pasoPilaArray(llamadas);//Obtenemos un camino candidato a ser el camino óptimo a partir de la pila.
+                vert = (Vertice) llamadas.last();//Guardamos la ciudad inicial la cual empezamos el camino en una variable tipo vertice.
                 camino[0] = vert.getNumVertice();//Guardamos la ciudad inicial en la ultima posicion del camino, indicando la vuelta a la ciudad inicial. 
-                double dcamino = getDistanciaTotal(distancia, camino);//Obtenemos la distancia de el camino candidato.
-                double dcaAc=getDistanciaTotal(distancia, caminoOptimo);//Obtenemos la distancia de el camino óptimo.
-                if ( dcamino< dcaAc || getDistanciaTotal(distancia, caminoOptimo) == 0) {//Comparamos si la distancia del camino candidato es menor que la distancia del camino óptimo.
-                    for(int i =0;i<camino.length;i++){//En el caso de que sea menor, se copiarán las ciudades del camino candidato en el camino óptimo.
-                        caminoOptimo[i]=camino[i];
+                dcamino = getDistanciaTotal(distancia, camino);//Obtenemos la distancia de el camino candidato.
+                if (dcamino < dcaAc || getDistanciaTotal(distancia, caminoOptimo) == 0) {//Comparamos si la distancia del camino candidato es menor que la distancia del camino óptimo.
+                    for (int i = 0; i < camino.length; i++) {//En el caso de que sea menor, se copiarán las ciudades del camino candidato en el camino óptimo.
+                        caminoOptimo[i] = camino[i];
                     }
                 }
             }
             if (llamadas.isEmpty()) {//compara el inicio vertice inicial con el fin que queremos encontrar
                 acabado = true;// si es igual true
             }
-            
-            if(!acabado){
+
+            if (!acabado) {
                 llamadas.pop();// se saca el vertice de la pila
                 inicio.setVisitado(false);// y se pone visitado a false
             }
-            
-        }
 
+        }
+        }
     }
 
     public static int[] pasoPilaArray(LinkedStack llamadas) {
-        int[] camino = new int[llamadas.size()+1];// se crea un array de vertices del tamaño de la pila
+        int[] camino = new int[llamadas.size() + 1];// se crea un array de vertices del tamaño de la pila
         int i = 0;
-        while (i<camino.length-1) {// se va sacando elementos de la pila e introduciendolos en el array
+        while (i < camino.length - 1) {// se va sacando elementos de la pila e introduciendolos en el array
             Vertice vert = (Vertice) llamadas.topIndex(i);
-            camino[i+1] = vert.getNumVertice();
+            camino[i + 1] = vert.getNumVertice();
             i++;
         }
         return camino;
     }
-
-    
 
 }
