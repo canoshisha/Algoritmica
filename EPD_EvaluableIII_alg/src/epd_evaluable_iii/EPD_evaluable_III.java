@@ -11,22 +11,24 @@ public class EPD_evaluable_III {
     public static void main(String[] args) {
 
         String fichero = "D:\\GIISI\\Segundo\\ALG\\EPD\\tsp\\tsp\\data\\prueba.tsp";
-        double distancias[][] = Ficheros(fichero);
-        Grafo graph = new Grafo(distancias.length);
-        for (int i = 0; i < graph.tablAdc.length; i++) {
+        double distancias[][] = Ficheros(fichero);//Creacion de la matriz de ciudades a partir del archivo tsp.
+        Grafo graph = new Grafo(distancias.length);//Creacion del Grafo.
+        for (int i = 0; i < graph.tablAdc.length; i++) {//Insertamos los vertices en el Grafo.
             graph.nuevoVertice(i);
         }
 
-        for (int j = 0; j < graph.size(); j++) {
+        for (int j = 0; j < graph.size(); j++) {//Insertamos las aristas de los vertices en el Grafo.
             for (int k = 0; k < graph.size(); k++) {
                 graph.nuevaArista(j, k);
             }
 
         }
         int caminoOptimo[] = new int[graph.numVerts+1];
-        System.out.println("¿En que ciudad comienza el camino?");
+        System.out.println("¿En que ciudad comienza el camino?\n");
         int ciudad = (int) IO.readNumber();
+        System.out.println("Estamos trabajando en ello\n");
         vueltaAtras(graph.getVertice(ciudad-1), graph, caminoOptimo, distancias);
+        System.out.println("El camino es:\n");
         System.out.println(ImprimirCamino(caminoOptimo,distancias));
 
 //        long  inicio,fin,sumatorioTiempos1,sumatorioTiempos2,sumatorioTiempos3;
@@ -212,14 +214,14 @@ public class EPD_evaluable_III {
 
         }
         if (vertice == null && acabado == false) {//si vertice es null y no se ha acabado
-            if (llamadas.size()+1 == caminoOptimo.length) {
-                int[] camino = pasoPilaArray(llamadas);
-                Vertice vert =(Vertice) llamadas.last();
-                camino[0] = vert.getNumVertice();
-                double dcamino = getDistanciaTotal(distancia, camino);
-                double dcaAc=getDistanciaTotal(distancia, caminoOptimo);
-                if ( dcamino< dcaAc || getDistanciaTotal(distancia, caminoOptimo) == 0) {
-                    for(int i =0;i<camino.length;i++){
+            if (llamadas.size()+1 == caminoOptimo.length) {//Si el tamaño de la pila es igual al tamaño del camino óptimo.
+                int[] camino = pasoPilaArray(llamadas);//Obtenemos un camino candidato a ser el camino óptimo a partir de la pila.
+                Vertice vert =(Vertice) llamadas.last();//Guardamos la ciudad inicial la cual empezamos el camino en una variable tipo vertice.
+                camino[0] = vert.getNumVertice();//Guardamos la ciudad inicial en la ultima posicion del camino, indicando la vuelta a la ciudad inicial. 
+                double dcamino = getDistanciaTotal(distancia, camino);//Obtenemos la distancia de el camino candidato.
+                double dcaAc=getDistanciaTotal(distancia, caminoOptimo);//Obtenemos la distancia de el camino óptimo.
+                if ( dcamino< dcaAc || getDistanciaTotal(distancia, caminoOptimo) == 0) {//Comparamos si la distancia del camino candidato es menor que la distancia del camino óptimo.
+                    for(int i =0;i<camino.length;i++){//En el caso de que sea menor, se copiarán las ciudades del camino candidato en el camino óptimo.
                         caminoOptimo[i]=camino[i];
                     }
                 }
@@ -248,13 +250,6 @@ public class EPD_evaluable_III {
         return camino;
     }
 
-    public static String imprimir(int[] camino) {
-        String s = "";
-        for (int i = 0 ;i <= camino.length-2; i++) {
-            s += camino[i]+1 + "-> ";
-        }
-        s += camino[camino.length-1]+1 + "";
-        return s;
-    }
+    
 
 }

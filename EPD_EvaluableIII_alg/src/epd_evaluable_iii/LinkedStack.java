@@ -87,19 +87,19 @@ public class LinkedStack<E> implements IStack<E> {
         }
         return s;// devuelve el string
     }
-    public E topIndex(int index){
-        Node<E> nodo = new Node<E>();
+    public E topIndex(int index){//Mñetodo para obtener los elementos de la pila en función de un índice.
+        Node<E> nodo = new Node<E>();// se crea un nodo
         nodo = firstNode;
-        for(int i=0;i<=index;i++){
-            if(index==i){
-                return nodo.getElement();
-            } else{
-                nodo= nodo.getNext();
+        for(int i=0;i<=index;i++){//Realizamos un recorrido por la pila.
+            if(index==i){//Si hemos encontrado ese nodo a través de la variable índice.
+                return nodo.getElement();//Devuelve el elemento del nodo
+            } else{//En caso contrario
+                nodo= nodo.getNext();//Seguimos recorriendo.
             }
         }
-        return null;
+        return null;//Si no lo encontramos, devuelve null.
     }
-    public E last(){
+    public E last(){//Método para obtener el primer elemento insertado en la pila
          if (lastNode != null) {//si hay un primer elemento lo devuelve
             return lastNode.getElement();
         } else {
